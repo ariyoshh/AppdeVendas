@@ -1,11 +1,10 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import styles from './styles';
+import { View, Text, Button } from 'react-native';
 
 const HomeScreen = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Sistema de Vendas</Text>
+    <View>
+      <Text>Sistema de Vendas</Text>
       <Button
         title="Gerenciar Produtos"
         onPress={() => navigation.navigate('CrudProdutos')}
@@ -19,15 +18,15 @@ const HomeScreen = ({ navigation }) => {
         onPress={() => navigation.navigate('Carrinho')}
       />
       <Button
-        title="Histórico de Vendas"
+        title="Todas as Vendas"
         onPress={() => navigation.navigate('TodasVendas')}
       />
       <Button
         title="Gerenciar Categorias"
-        onPress={() => navigation.navigate('CrudCategoria')}
+        onPress={() => navigation.navigate('CrudCategorias')}
       />
       <Button
-        title="Sobre o App"
+        title="Sobre"
         onPress={() => navigation.navigate('Sobre')}
       />
     </View>

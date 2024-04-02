@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, FlatList, Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import styles from './styles'; // Certifique-se de que o caminho esteja correto
+import { View, Text, TextInput, Button, Alert, ScrollView } from 'react-native';
+import styles from './styles';
+import Categorias from '../../components/Categorias/Categorias';
+import { getAllCategorias, insertCategoria, updateCategoria, deleteCategoria } from '../../db/database';
 
 const CrudCategorias = () => {
   const [categorias, setCategorias] = useState([]);
-  const [categoriaAtual, setCategoriaAtual] = useState('');
+  const [novaCategoria, setNovaCategoria] = useState('');
 
   useEffect(() => {
     carregarCategorias();
@@ -13,50 +14,42 @@ const CrudCategorias = () => {
 
   const carregarCategorias = async () => {
     try {
-      const jsonValue = await AsyncStorage.getItem('categorias');
-      setCategorias(jsonValue != null ? JSON.parse(jsonValue) : []);
-    } catch (e) {
-      Alert.alert('Erro ao carregar as categorias');
+      const categoriasFromDB = await getAllCategorias();
+      setCategorias(categoriasFromDB);
+    } catch (error) {
+      Alert.alert('Erro ao carregar as categorias', error.message);
     }
   };
 
   const adicionarCategoria = async () => {
-    if (!categoriaAtual.trim()) {
-      Alert.alert('Por favor, insira o nome da categoria.');
-      return;
-    }
-    const novaCategoria = { id: Date.now().toString(), nome: categoriaAtual };
-    const novaLista = [...categorias, novaCategoria];
     try {
-      await AsyncStorage.setItem('categorias', JSON.stringify(novaLista));
-      setCategorias(novaLista);
-      setCategoriaAtual('');
-    } catch (e) {
-      Alert.alert('Erro ao adicionar a categoria');
-    }
-  };
-
-  const removerCategoria = async (id) => {
-    const novaLista = categorias.filter(categoria => categoria.id !== id);
-    try {
-      await AsyncStorage.setItem('categorias', JSON.stringify(novaLista));
-      setCategorias(novaLista);
-    } catch (e) {
-      Alert.alert('Erro ao remover a categoria');
-    }
-  };
-
-  const editarCategoria = async (id, novoNome) => {
-    const index = categorias.findIndex(categoria => categoria.id === id);
-    if (index !== -1) {
-      const novaLista = [...categorias];
-      novaLista[index].nome = novoNome; // Atualize com a lógica adequada para capturar o novo nome
-      try {
-        await AsyncStorage.setItem('categorias', JSON.stringify(novaLista));
-        setCategorias(novaLista);
-      } catch (e) {
-        Alert.alert('Erro ao editar a categoria');
+      if (!novaCategoria.trim()) {
+        Alert.alert('Por favor, insira o nome da categoria.');
+        return;
       }
+      await insertCategoria(novaCategoria);
+      setNovaCategoria('');
+      carregarCategorias();
+    } catch (error) {
+      Alert.alert('Erro ao adicionar a categoria', error.message);
+    }
+  };
+
+  const handleDeleteCategoria = async (id) => {
+    try {
+      await deleteCategoria(id);
+      carregarCategorias();
+    } catch (error) {
+      Alert.alert('Erro ao deletar a categoria', error.message);
+    }
+  };
+
+  const handleEditCategoria = async (id, novoNome) => {
+    try {
+      await updateCategoria(id, novoNome);
+      carregarCategorias();
+    } catch (error) {
+      Alert.alert('Erro ao editar a categoria', error.message);
     }
   };
 
@@ -66,23 +59,20 @@ const CrudCategorias = () => {
       <TextInput
         style={styles.input}
         placeholder="Nova Categoria"
-        value={categoriaAtual}
-        onChangeText={setCategoriaAtual}
+        value={novaCategoria}
+        onChangeText={setNovaCategoria}
       />
       <Button title="Adicionar" onPress={adicionarCategoria} />
-      <FlatList
-        data={categorias}
-        renderItem={({ item }) => (
-          <View style={styles.itemContainer}>
-            <Text style={styles.itemText}>{item.nome}</Text>
-            <View style={styles.buttonsContainer}>
-              <Button title="Editar" onPress={() => editarCategoria(item.id, 'NovoNome')} />
-              <Button title="Remover" onPress={() => removerCategoria(item.id)} />
-            </View>
-          </View>
-        )}
-        keyExtractor={item => item.id}
-      />
+      <ScrollView style={styles.scrollView}>
+        {categorias.map((categoria) => (
+          <Categorias
+            key={categoria.id.toString()}
+            categoria={categoria}
+            onDelete={handleDeleteCategoria}
+            onEdit={handleEditCategoria}
+          />
+        ))}
+      </ScrollView>
     </View>
   );
 };

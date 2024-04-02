@@ -28,7 +28,7 @@ const App = () => {
         <Stack.Screen name="Vender" component={Vender} />
         <Stack.Screen name="Carrinho" component={Carrinho} />
         <Stack.Screen name="TodasVendas" component={TodasVendas} />
-        <Stack.Screen name="CrudCategoria" component={CrudCategorias} />
+        <Stack.Screen name="CrudCategorias" component={CrudCategorias} />
         <Stack.Screen name="Sobre" component={Sobre} />
       </Stack.Navigator>
       <StatusBar style="auto" />

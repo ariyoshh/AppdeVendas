@@ -1,39 +1,39 @@
 import { StyleSheet } from 'react-native';
 
-export default StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    margin: 20,
   },
   title: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
   },
   input: {
     borderWidth: 1,
     borderColor: 'gray',
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    marginBottom: 20,
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  },
+  scrollView: {
+    marginTop: 20,
   },
   itemContainer: {
-    backgroundColor: 'lightgray',
+    backgroundColor: '#f9f9f9',
     padding: 20,
-    marginBottom: 10,
+    borderRadius: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    marginBottom: 10,
   },
   itemText: {
     fontSize: 18,
   },
   buttonsContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'blue',
-    marginRight: 10,
   },
 });
+
+export default styles;
