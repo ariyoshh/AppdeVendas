@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Button, Image, StyleSheet } from 'react-native';
+import { View, Text, FlatList, Button, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker'; 
 import { getAllProdutos, getAllCategorias } from '../../db/database';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
+import Background from '../../components/Background/Background';
 
 const Vender = () => {
   const [produtos, setProdutos] = useState([]);
@@ -47,7 +48,9 @@ const Vender = () => {
   const filtrarProdutos = categoriaSelecionada === 'todas' ? produtos : produtos.filter(produto => produto.categoriaId.toString() === categoriaSelecionada);
 
   return (
-    <View style={styles.container}>
+    <Background>
+      <View style={styles.container}>
+      <View style={styles.modalContent}>
       <Text>Vender Produtos</Text>
       <Picker
         selectedValue={categoriaSelecionada}
@@ -65,16 +68,18 @@ const Vender = () => {
           <View style={styles.item}>
             <Image source={{ uri: item.imagemUri }} style={styles.imagem} />
             <Text>{item.nome} - R${item.preco.toFixed(2)}</Text>
-            {/* Ajuste o caminho da imagem conforme necessário */}
-            <Button title="Adicionar ao Carrinho" onPress={() => adicionarAoCarrinho(item)} />
+            <TouchableOpacity style={styles.button} onPress={() => adicionarAoCarrinho(item)}>
+              <Text style={styles.buttonText}>Adicionar ao Carrinho</Text>
+            </TouchableOpacity>
           </View>
         )}
       />
-      <Button
-        title={`Ir para o Carrinho (${quantidadeCarrinho} itens)`}
-        onPress={() => navigation.navigate('Carrinho')}
-      />
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Carrinho')}>
+        <Text style={styles.buttonText}>Ir para o Carrinho ({quantidadeCarrinho} itens)</Text>
+      </TouchableOpacity>
     </View>
+    </View>
+    </Background>
   );
 };
 

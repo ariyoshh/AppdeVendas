@@ -5,20 +5,25 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#fff',
+    alignItems: 'center', 
+    justifyContent: 'center',
   },
   title: {
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 10,
+    textAlign: 'center', 
   },
   text: {
     fontSize: 16,
     marginBottom: 5,
-    color: 'blue',
+    color: '#2d5658',
+    fontWeight: 'bold',
+    textAlign: 'center', 
   },
   minigameText: {
     fontSize: 18,
-    textAlign: 'center',
+    textAlign: 'center', 
     marginTop: 20,
   },
 });

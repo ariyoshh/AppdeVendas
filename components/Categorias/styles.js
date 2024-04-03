@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  // Estilos existentes aqui
   itemContainer: {
     backgroundColor: '#FFF',
     borderColor: '#DDD',
