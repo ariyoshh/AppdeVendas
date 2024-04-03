@@ -12,12 +12,13 @@ import Carrinho from './telas/Carrinho/Carrinho';
 import TodasVendas from './telas/TodasVendas/TodasVendas';
 import CrudCategorias from './telas/CrudCategorias/CrudCategorias';
 import Sobre from './telas/Sobre/Sobre';
+import DetalhesVenda from './telas/DetalhesVenda/DetalhesVenda';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   React.useEffect(() => {
-    dropTables();
+    //dropTables();
     initDB();
   }, []);
 
@@ -48,6 +49,11 @@ const App = () => {
           name="TodasVendas"
           component={TodasVendas}
           options={{ headerTitle: '', headerBackVisible: true }}
+        />
+        <Stack.Screen
+          name="DetalhesVenda"
+          component={DetalhesVenda}
+          options={{ headerTitle: 'Detalhes da Venda', headerBackVisible: true }}
         />
         <Stack.Screen
           name="CrudCategorias"

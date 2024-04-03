@@ -3,6 +3,7 @@ import { View, Text, Button, FlatList, TextInput, Image, StyleSheet } from 'reac
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { insertVenda, insertItensVenda } from '../../db/database';
 import styles from './styles';
+import { getCurrentDateAndTime } from '../../Utils/dateUtils';
 
 const Carrinho = () => {
   const [itensCarrinho, setItensCarrinho] = useState([]);
@@ -40,18 +41,33 @@ const Carrinho = () => {
     setItensCarrinho([]);
   };
 
-  const efetivarVenda = async () => {
-    console.log('Iniciando efetivação da venda...');
+const efetivarVenda = async () => {
+  if (itensCarrinho.length === 0) {
+    alert('O carrinho está vazio.');
+    return;
+  }
+
+  console.log('Iniciando efetivação da venda...');
+
+  try {
     const totalVenda = itensCarrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
     console.log('Total da venda:', totalVenda);
-    const vendaId = await insertVenda(new Date(), totalVenda);
+
+    const vendaId = await insertVenda(getCurrentDateAndTime(), totalVenda);
     console.log('ID da venda:', vendaId);
+
     for (const item of itensCarrinho) {
       await insertItensVenda(vendaId, item.id, item.quantidade);
     }
+
     alert('Venda efetivada com sucesso!');
-    limparCarrinho();
-  };
+    await limparCarrinho();
+  } catch (error) {
+    console.error('Erro ao efetivar venda:', error);
+    alert('Houve um erro ao efetivar a venda. Por favor, tente novamente.');
+  }
+};
+
 
   const calcularTotal = () => itensCarrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0).toFixed(2);
 

@@ -38,7 +38,7 @@ const Vender = () => {
       carrinhoAtual.push(item);
       await AsyncStorage.setItem('carrinho', JSON.stringify(carrinhoAtual));
       alert('Produto adicionado ao carrinho!');
-      atualizarQuantidadeCarrinho(); // Atualiza a quantidade de itens no carrinho.
+      atualizarQuantidadeCarrinho(); 
     } catch (error) {
       alert('Erro ao adicionar ao carrinho: ' + error.message);
     }
