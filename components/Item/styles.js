@@ -14,6 +14,7 @@ export default StyleSheet.create({
   },
   itemText: {
     fontSize: 16,
+    maxWidth: 220,
   },
   buttonsContainer: {
     flexDirection: 'row',
