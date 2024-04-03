@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, FlatList, TextInput, Image, StyleSheet } from 'react-native';
+import { View, Text, Button, FlatList, TextInput, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { insertVenda, insertItensVenda } from '../../db/database';
 import styles from './styles';
 import { getCurrentDateAndTime } from '../../Utils/dateUtils';
+import Background from '../../components/Background/Background';
 
 const Carrinho = () => {
   const [itensCarrinho, setItensCarrinho] = useState([]);
@@ -67,37 +68,49 @@ const efetivarVenda = async () => {
     alert('Houve um erro ao efetivar a venda. Por favor, tente novamente.');
   }
 };
-
-
   const calcularTotal = () => itensCarrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0).toFixed(2);
 
   return (
-    <View style={styles.container}>
+    <Background>
+      <View style={styles.container}>
+      <View style={styles.modalContent}>
       <FlatList
         data={itensCarrinho}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.item}>
-            <Image source={{ uri: item.imagemUri }} style={{ width: 100, height: 100 }} />
+            <Image source={{ uri: item.imagemUri }} style={styles.imagem} />
             <Text>{item.nome} - R${item.preco.toFixed(2)}</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Button title="-" onPress={() => atualizarQuantidade(item.id, item.quantidade - 1)} />
+              <TouchableOpacity style={styles.button} onPress={() => atualizarQuantidade(item.id, item.quantidade - 1)}>
+                <Text style={styles.buttonText}>-</Text>
+              </TouchableOpacity>
               <TextInput
                 style={styles.input}
                 onChangeText={(text) => atualizarQuantidade(item.id, parseInt(text) || 1)}
                 value={item.quantidade.toString()}
                 keyboardType="numeric"
               />
-              <Button title="+" onPress={() => atualizarQuantidade(item.id, item.quantidade + 1)} />
+              <TouchableOpacity style={styles.button} onPress={() => atualizarQuantidade(item.id, item.quantidade + 1)}>
+                <Text style={styles.buttonText}>+</Text>
+              </TouchableOpacity>
             </View>
-            <Button title="Remover" onPress={() => removerDoCarrinho(item.id)} />
+            <TouchableOpacity style={styles.button} onPress={() => removerDoCarrinho(item.id)}>
+              <Text style={styles.buttonText}>Remover</Text>
+            </TouchableOpacity>
           </View>
         )}
       />
       <Text>Total: R$ {calcularTotal()}</Text>
-      <Button title="Limpar Carrinho" onPress={limparCarrinho} />
-      <Button title="Efetivar Venda" onPress={efetivarVenda} />
+      <TouchableOpacity style={styles.button} onPress={limparCarrinho}>
+        <Text style={styles.buttonText}>Limpar Carrinho</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={efetivarVenda}>
+        <Text style={styles.buttonText}>Efetivar Venda</Text>
+      </TouchableOpacity>
     </View>
+    </View>
+    </Background>
   );
 };
 

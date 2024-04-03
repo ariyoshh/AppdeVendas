@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, Button, TextInput, Alert } from 'react-native';
+import { View, Text, Button, TextInput, Alert, TouchableOpacity} from 'react-native';
 import styles from './styles'; 
+import { Ionicons } from '@expo/vector-icons';
 
 const Categorias = ({ categoria, onDelete, onEdit }) => {
   const [editando, setEditando] = useState(false);
@@ -28,15 +29,27 @@ const Categorias = ({ categoria, onDelete, onEdit }) => {
             onChangeText={setNovoNome}
             style={styles.input}
           />
-          <Button title="Salvar" onPress={handleEdit} />
-          <Button title="Cancelar" onPress={() => setEditando(false)} />
+          <TouchableOpacity style={styles.iconButton} onPress={handleEdit}>
+            <Ionicons name="checkmark-outline" size={24} color="#c36571" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.iconButton} 
+            onPress={() => setEditando(false)}>
+            <Ionicons name="close-outline" size={24} color="#2d5658" />
+          </TouchableOpacity>
         </>
       ) : (
         <>
           <Text style={styles.itemText}>{categoria.nome}</Text>
           <View style={styles.buttonsContainer}>
-            <Button title="Editar" onPress={() => setEditando(true)} />
-            <Button title="Remover" onPress={handleDelete} />
+            <TouchableOpacity style={styles.iconButton} onPress={() => setEditando(true)}>
+              <Ionicons name="pencil-outline" size={24} color="#c36571" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.iconButton} 
+              onPress={handleDelete}>
+              <Ionicons name="trash-outline" size={24} color="#2d5658" />
+            </TouchableOpacity>
           </View>
         </>
       )}

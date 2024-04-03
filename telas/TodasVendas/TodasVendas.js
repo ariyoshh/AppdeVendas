@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import { useNavigation } from '@react-navigation/native';
+import Background from '../../components/Background/Background';
+import styles from './styles';
 
-
-// Abre (ou cria, se não existir) o banco de dados
 const db = SQLite.openDatabase('app_vendas.db');
 
 
@@ -32,7 +32,9 @@ const TodasVendas = () => {
   };
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
+    <Background>
+      <View style={styles.modalContent}>
+      <View style={{ flex: 1, padding: 20 }}>
       <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 20 }}>Todas as Vendas</Text>
       <FlatList
         data={vendas}
@@ -55,6 +57,8 @@ const TodasVendas = () => {
         keyExtractor={(item) => item.id.toString()}
       />
     </View>
+      </View>
+    </Background>
   );
 };
 

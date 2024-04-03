@@ -24,46 +24,55 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          headerStyle: { backgroundColor: '#2d5658' }, 
+          headerTintColor: '#fff', 
+          headerBackVisible: true, 
+          headerTitleStyle: { fontFamily: 'Roboto', fontSize: 18, fontWeight: 'bold' }, 
+          headerTitleAlign: 'center', 
+        }}
+      >
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{ headerShown: false }}
+          options={{ headerTitle: 'MIKU DAYO VENDAS', headerBackVisible: false }}
         />
         <Stack.Screen
           name="CrudProdutos"
           component={CrudProdutos}
-          options={{ headerTitle: '', headerBackVisible: true }}
+          options={{ headerTitle: 'MIKU 🩷  PRODUTOS'}}
         />
         <Stack.Screen
           name="Vender"
           component={Vender}
-          options={{ headerTitle: '', headerBackVisible: true }}
+          options={{ headerTitle: 'MIKU 🩷  VENDAS'}}
         />
         <Stack.Screen
           name="Carrinho"
           component={Carrinho}
-          options={{ headerTitle: '', headerBackVisible: true }}
+          options={{ headerTitle: 'MIKU 🩷  CARRINHO'}}
         />
         <Stack.Screen
           name="TodasVendas"
           component={TodasVendas}
-          options={{ headerTitle: '', headerBackVisible: true }}
+          options={{ headerTitle: ''}}
         />
         <Stack.Screen
           name="DetalhesVenda"
           component={DetalhesVenda}
-          options={{ headerTitle: 'Detalhes da Venda', headerBackVisible: true }}
+          options={{ headerTitle: 'Detalhes da Venda'}}
         />
         <Stack.Screen
           name="CrudCategorias"
           component={CrudCategorias}
-          options={{ headerTitle: '', headerBackVisible: true }}
+          options={{ headerTitle: 'MIKU 🩷  CATEGORIAS'}}
         />
         <Stack.Screen
           name="Sobre"
           component={Sobre}
-          options={{ headerTitle: '', headerBackVisible: true }}
+          options={{ headerTitle: 'SOBRE MIKU 🩷'}}
         />
       </Stack.Navigator>
       <StatusBar style="auto" />

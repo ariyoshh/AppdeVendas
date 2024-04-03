@@ -11,6 +11,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#47b6b5',
+    width: '80%', 
+  },
   itemContainer: {
     padding: 10,
     marginVertical: 5,

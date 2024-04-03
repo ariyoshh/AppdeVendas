@@ -3,32 +3,48 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#e2b3b6',
+    width: '80%', 
   },
   input: {
+    width: '100%',
+    height: 40,
     borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5,
-    padding: 10,
+    borderColor: '#c36571',
     marginBottom: 10,
+    paddingHorizontal: 10,
+    borderRadius: 5,
   },
   picker: {
-    height: 50,
+    width: '100%',
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#c36571',
+    borderRadius: 5,
     marginBottom: 10,
+  },
+  button: {
+    backgroundColor: '#c36571',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
   },
   scrollView: {
-    marginTop: 20,
-  },
-  itemContainer: {
-    backgroundColor: '#f9f9f9',
-    padding: 20,
-    borderRadius: 5,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-  },
-  itemText: {
-    fontSize: 18,
+    width: '100%',
+    marginTop: 10,
   },
 });
 

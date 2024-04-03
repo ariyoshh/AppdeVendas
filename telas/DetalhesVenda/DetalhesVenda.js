@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import Background from '../../components/Background/Background';
 
 // Abre (ou cria, se não existir) o banco de dados
 const db = SQLite.openDatabase('app_vendas.db');
@@ -12,7 +13,6 @@ const DetalhesVenda = () => {
   const { vendaId } = route.params;
 
   useEffect(() => {
-    // Função para carregar os detalhes da venda
     const carregarDetalhesVenda = () => {
       db.transaction((tx) => {
         tx.executeSql(
@@ -45,19 +45,32 @@ const DetalhesVenda = () => {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <Background>
+     <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.modalContent}>
       <Text style={styles.title}>Detalhes da Venda</Text>
       <Text style={styles.details}>Data da Venda: {detalhesVenda.data}</Text>
       <Text style={styles.details}>Total da Venda: ${detalhesVenda.total.toFixed(2)}</Text>
-    </ScrollView>
+    </View>
+    </ScrollView> 
+    </Background>
   );
 };
 
-// Definição do objeto styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: 'white',
     padding: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#47b6b5',
+    width: '80%', 
   },
   title: {
     fontSize: 22,

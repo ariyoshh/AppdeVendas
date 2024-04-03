@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, Alert, ScrollView } from 'react-native';
+import { View, Text, TextInput, Button, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import Categorias from '../../components/Categorias/Categorias';
+import Background from '../../components/Background/Background';
 import { getAllCategorias, insertCategoria, updateCategoria, deleteCategoria } from '../../db/database';
 
 const CrudCategorias = () => {
@@ -54,15 +55,18 @@ const CrudCategorias = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Gerenciar Categorias</Text>
+    <Background>
+      <View style={styles.container}>
+      <View style={styles.modalContent}>
       <TextInput
         style={styles.input}
         placeholder="Nova Categoria"
         value={novaCategoria}
         onChangeText={setNovaCategoria}
       />
-      <Button title="Adicionar" onPress={adicionarCategoria} />
+     <TouchableOpacity style={styles.button} onPress={adicionarCategoria}>
+        <Text style={styles.buttonText}>Adicionar</Text>
+      </TouchableOpacity>
       <ScrollView style={styles.scrollView}>
         {categorias.map((categoria) => (
           <Categorias
@@ -74,6 +78,8 @@ const CrudCategorias = () => {
         ))}
       </ScrollView>
     </View>
+    </View>
+    </Background>
   );
 };
 
