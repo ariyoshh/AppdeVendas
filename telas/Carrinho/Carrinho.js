@@ -1,74 +1,89 @@
-// Carrinho.js
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, ScrollView, Alert } from 'react-native';
+import { View, Text, Button, FlatList, TextInput, Image, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import ItemCarrinho from '../../components/Item/Item';
-import handleEfetuarCompra from '../../Utils/handleEfetuarCompra';
+import { insertVenda, insertItensVenda } from '../../db/database';
+import styles from './styles';
 
-const Carrinho = ({ navigation }) => {
-  const [carrinho, setCarrinho] = useState([]);
-  const [valorTotal, setValorTotal] = useState(0);
+const Carrinho = () => {
+  const [itensCarrinho, setItensCarrinho] = useState([]);
 
   useEffect(() => {
-    const loadCart = async () => {
-      const cartData = await AsyncStorage.getItem('carrinho');
-      if (cartData) {
-        setCarrinho(JSON.parse(cartData));
-      }
-    };
-    loadCart();
+    carregarCarrinho();
   }, []);
 
-  useEffect(() => {
-    const calculateTotal = () => {
-      let total = 0;
-      carrinho.forEach(item => {
-        total += item.produto.preco * item.quantidade;
-      });
-      setValorTotal(total);
-    };
-    calculateTotal();
-  }, [carrinho]);
-
-  const handleRemoveItem = async (produtoId) => {
-    const updatedCart = carrinho.filter(item => item.produto.id !== produtoId);
-    await AsyncStorage.setItem('carrinho', JSON.stringify(updatedCart));
-    setCarrinho(updatedCart);
+  const carregarCarrinho = async () => {
+    const carrinho = JSON.parse(await AsyncStorage.getItem('carrinho')) || [];
+    setItensCarrinho(carrinho);
   };
 
-  const handleQuantityChange = async (produtoId, newQuantity) => {
-    const updatedCart = carrinho.map(item => {
-      if (item.produto.id === produtoId) {
-        return { ...item, quantidade: newQuantity };
+  const atualizarQuantidade = async (id, quantidade) => {
+    const novaQuantidade = Math.max(1, quantidade);
+    const carrinhoAtualizado = itensCarrinho.map(item => {
+      if (item.id === id) {
+        return { ...item, quantidade: novaQuantidade };
       }
       return item;
     });
-    await AsyncStorage.setItem('carrinho', JSON.stringify(updatedCart));
-    setCarrinho(updatedCart);
+    setItensCarrinho(carrinhoAtualizado);
+    await AsyncStorage.setItem('carrinho', JSON.stringify(carrinhoAtualizado));
   };
 
-  const handleCompra = () => {
-    handleEfetuarCompra(carrinho, setCarrinho, navigation);
+
+  const removerDoCarrinho = async (id) => {
+    const carrinhoAtualizado = itensCarrinho.filter(item => item.id !== id);
+    setItensCarrinho(carrinhoAtualizado);
+    await AsyncStorage.setItem('carrinho', JSON.stringify(carrinhoAtualizado));
   };
+
+  const limparCarrinho = async () => {
+    await AsyncStorage.removeItem('carrinho');
+    setItensCarrinho([]);
+  };
+
+  const efetivarVenda = async () => {
+    console.log('Iniciando efetivação da venda...');
+    const totalVenda = itensCarrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+    console.log('Total da venda:', totalVenda);
+    const vendaId = await insertVenda(new Date(), totalVenda);
+    console.log('ID da venda:', vendaId);
+    for (const item of itensCarrinho) {
+      await insertItensVenda(vendaId, item.id, item.quantidade);
+    }
+    alert('Venda efetivada com sucesso!');
+    limparCarrinho();
+  };
+
+  const calcularTotal = () => itensCarrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0).toFixed(2);
 
   return (
-    <View style={{ flex: 1 }}>
-      <ScrollView>
-        {carrinho.map(item => (
-          <ItemCarrinho
-            key={item.produto.id}
-            item={item}
-            onRemove={handleRemoveItem}
-            onQuantityChange={handleQuantityChange}
-          />
-        ))}
-      </ScrollView>
-      <View style={{ padding: 10 }}>
-        <Text>Total: R${valorTotal.toFixed(2)}</Text>
-        <Button title="Efetuar Compra" onPress={handleCompra} />
-      </View>
+    <View style={styles.container}>
+      <FlatList
+        data={itensCarrinho}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <Image source={{ uri: item.imagemUri }} style={{ width: 100, height: 100 }} />
+            <Text>{item.nome} - R${item.preco.toFixed(2)}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Button title="-" onPress={() => atualizarQuantidade(item.id, item.quantidade - 1)} />
+              <TextInput
+                style={styles.input}
+                onChangeText={(text) => atualizarQuantidade(item.id, parseInt(text) || 1)}
+                value={item.quantidade.toString()}
+                keyboardType="numeric"
+              />
+              <Button title="+" onPress={() => atualizarQuantidade(item.id, item.quantidade + 1)} />
+            </View>
+            <Button title="Remover" onPress={() => removerDoCarrinho(item.id)} />
+          </View>
+        )}
+      />
+      <Text>Total: R$ {calcularTotal()}</Text>
+      <Button title="Limpar Carrinho" onPress={limparCarrinho} />
+      <Button title="Efetivar Venda" onPress={efetivarVenda} />
     </View>
   );
 };
+
 
 export default Carrinho;

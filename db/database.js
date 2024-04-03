@@ -2,6 +2,19 @@ import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('app_vendas.db');
 
+const dropTables = () => {
+  db.transaction(tx => {
+    tx.executeSql("DROP TABLE IF EXISTS itensVenda;", [], () => console.log('Tabela itensVenda excluída'), (_, error) => console.log('Erro ao excluir tabela itensVenda:', error.message));
+    tx.executeSql("DROP TABLE IF EXISTS vendas;", [], () => console.log('Tabela vendas excluída'), (_, error) => console.log('Erro ao excluir tabela vendas:', error.message));
+    tx.executeSql("DROP TABLE IF EXISTS produtos;", [], () => console.log('Tabela produtos excluída'), (_, error) => console.log('Erro ao excluir tabela produtos:', error.message));
+    tx.executeSql("DROP TABLE IF EXISTS categorias;", [], () => console.log('Tabela categorias excluída'), (_, error) => console.log('Erro ao excluir tabela categorias:', error.message));
+  }, (error) => {
+    console.log('Erro geral ao excluir tabelas:', error.message);
+  }, () => {
+    console.log('Todas as tabelas foram excluídas com sucesso');
+  });
+};
+
 const initDB = () => {
   db.transaction(tx => {
     // Criação da tabela categorias
@@ -130,6 +143,54 @@ const deleteProduto = (id) => {
     });
   });
 };
+
+const insertVenda = async (data, total) => {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        "INSERT INTO vendas (data, total) VALUES (?, ?);",
+        [data, total],
+        (_, result) => resolve(result.insertId),
+        (_, error) => reject(error)
+      );
+    });
+  });
+};
+
+
+const insertItensVenda = (vendaId, produtoId, quantidade) => {
+  console.log('Iniciando inserção do item da venda...');
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        "INSERT INTO itensVenda (vendaId, produtoId, quantidade) VALUES (?, ?, ?);",
+        [vendaId, produtoId, quantidade],
+        (_, result) => {
+          console.log('Item da venda inserido com sucesso:', result.insertId);
+          resolve(result.insertId);
+        },
+        (_, error) => {
+          console.log('Erro ao inserir o item da venda:', error);
+          reject(error);
+        }
+      );
+    });
+  });
+};
+
+const updateProduto = (id, nome, preco, categoriaId, imagemUri) => {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        "UPDATE produtos SET nome=?, preco=?, categoriaId=?, imagemUri=? WHERE id=?;",
+        [nome, preco, categoriaId, imagemUri, id],
+        (_, result) => resolve(result),
+        (_, error) => reject(error)
+      );
+    });
+  });
+};
+
 // Adicione aqui as funções para manipulação das tabelas produtos, vendas e itensVenda.
 
-export { initDB, getAllCategorias, insertCategoria, updateCategoria, deleteCategoria, getAllProdutos, insertProduto, deleteProduto };
+export {dropTables, initDB, getAllCategorias, insertCategoria, updateCategoria, deleteCategoria, getAllProdutos, insertProduto, deleteProduto, insertVenda, insertItensVenda, updateProduto};

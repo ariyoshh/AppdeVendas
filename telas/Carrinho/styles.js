@@ -3,32 +3,19 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
-    backgroundColor: '#f5f5f5',
+    marginTop: 20,
   },
-  title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginVertical: 10,
-  },
-  itemContainer: {
+  item: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 10,
-    marginVertical: 5,
-    backgroundColor: '#ffffff',
-    borderRadius: 5,
+    marginBottom: 10,
   },
-  itemText: {
-    flex: 1,
-    fontSize: 16,
-  },
-  total: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'right',
-    marginTop: 20,
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 5,
+    width: 50,
   },
 });
 

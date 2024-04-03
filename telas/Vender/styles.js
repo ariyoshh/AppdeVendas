@@ -3,28 +3,17 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    marginTop: 20,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  item: {
+    flexDirection: 'row',
     marginBottom: 10,
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
-  itemContainer: {
-    marginBottom: 20,
-  },
-  itemText: {
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  produtoContainer: {
-    marginLeft: 20,
-    borderLeftWidth: 2,
-    paddingLeft: 10,
-  },
-  produtoText: {
-    fontSize: 14,
-    marginBottom: 3,
+  imagem: {
+    width: 50,
+    height: 50,
   },
 });
 
