@@ -30,13 +30,42 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
+    padding: 10,
+    marginVertical: 5,
+    backgroundColor: '#ffebee',
+    borderRadius: 5,
+  },
+  quantityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  quantityButton: {
+    backgroundColor: '#e57373',
+    padding: 5,
+    marginHorizontal: 5,
+    borderRadius: 3,
+  },
+  quantityButtonText: {
+    color: 'white',
+    fontSize: 18,
+  },
+  quantityInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 5,
+    marginHorizontal: 5,
+    width: 40, 
+    textAlign: 'center',
   },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 5,
     width: 50,
+  },
+  nomeProduto: {
+    maxWidth: 150,
+    overflow: 'hidden',
   },
 });
 

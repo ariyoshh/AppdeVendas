@@ -79,28 +79,30 @@ const efetivarVenda = async () => {
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.item}>
-            <Image source={{ uri: item.imagemUri }} style={styles.imagem} />
-            <Text>{item.nome} - R${item.preco.toFixed(2)}</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <TouchableOpacity style={styles.button} onPress={() => atualizarQuantidade(item.id, item.quantidade - 1)}>
-                <Text style={styles.buttonText}>-</Text>
+            <Text style={styles.nomeProduto}>{item.nome}  R${item.preco.toFixed(2)}</Text>
+            <View style={styles.quantityContainer}>
+              <TouchableOpacity
+                style={styles.quantityButton}
+                onPress={() => atualizarQuantidade(item.id, item.quantidade - 1)}>
+                <Text style={styles.quantityButtonText}>-</Text>
               </TouchableOpacity>
               <TextInput
-                style={styles.input}
+                style={styles.quantityInput}
                 onChangeText={(text) => atualizarQuantidade(item.id, parseInt(text) || 1)}
                 value={item.quantidade.toString()}
                 keyboardType="numeric"
               />
-              <TouchableOpacity style={styles.button} onPress={() => atualizarQuantidade(item.id, item.quantidade + 1)}>
-                <Text style={styles.buttonText}>+</Text>
+              <TouchableOpacity
+                style={styles.quantityButton}
+                onPress={() => atualizarQuantidade(item.id, item.quantidade + 1)}>
+                <Text style={styles.quantityButtonText}>+</Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.button} onPress={() => removerDoCarrinho(item.id)}>
-              <Text style={styles.buttonText}>Remover</Text>
-            </TouchableOpacity>
           </View>
         )}
       />
+
+
       <Text>Total: R$ {calcularTotal()}</Text>
       <TouchableOpacity style={styles.button} onPress={limparCarrinho}>
         <Text style={styles.buttonText}>Limpar Carrinho</Text>

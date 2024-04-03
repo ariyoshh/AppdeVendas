@@ -31,6 +31,8 @@ const CrudProdutos = () => {
     })();
   }, []);
 
+  const [, forceUpdate] = React.useReducer(x => x + 1, 0);
+
   const carregarDados = async () => {
     try {
       const categoriasFromDB = await getAllCategorias();
@@ -56,6 +58,7 @@ const CrudProdutos = () => {
         Alert.alert('Sucesso', 'Produto adicionado com sucesso!');
       }
       limparFormulario();
+      forceUpdate();
       carregarDados();
     } catch (error) {
       Alert.alert('Erro ao adicionar/editar o produto', error.message);
@@ -70,8 +73,9 @@ const CrudProdutos = () => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
-      setImagemUri(result.uri);
+    if (!result.canceled) {
+      const imageUri = result.assets ? result.assets[0].uri : null;
+      setImagemUri(imageUri);
     }
   };
 

@@ -191,6 +191,4 @@ const updateProduto = (id, nome, preco, categoriaId, imagemUri) => {
   });
 };
 
-// Adicione aqui as funções para manipulação das tabelas produtos, vendas e itensVenda.
-
 export {dropTables, initDB, getAllCategorias, insertCategoria, updateCategoria, deleteCategoria, getAllProdutos, insertProduto, deleteProduto, insertVenda, insertItensVenda, updateProduto};

@@ -31,11 +31,17 @@ const TodasVendas = () => {
     });
   };
 
+  const formatarData = (dataISO) => {
+  const data = new Date(dataISO);
+  return [
+    data.getDate().toString().padStart(2, '0'),
+    (data.getMonth() + 1).toString().padStart(2, '0'),
+    data.getFullYear(),
+  ].join('/');
+};
+
   return (
     <Background>
-      <View style={styles.modalContent}>
-      <View style={{ flex: 1, padding: 20 }}>
-      <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 20 }}>Todas as Vendas</Text>
       <FlatList
         data={vendas}
         renderItem={({ item }) => (
@@ -51,13 +57,12 @@ const TodasVendas = () => {
               console.log('Detalhes da venda', item.id);
             }}
           >
-            <Text style={{ fontSize: 18 }}>Data: {item.data} - Total: ${item.total.toFixed(2)}</Text>
+            <Text style={{ fontSize: 18 }}>ID: {item.id} Data: {item.data}</Text>
+            <Text style={{ fontSize: 18 }}>Total: ${item.total.toFixed(2)}</Text>
           </TouchableOpacity>
         )}
         keyExtractor={(item) => item.id.toString()}
       />
-    </View>
-      </View>
     </Background>
   );
 };

@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, Button, Alert } from 'react-native';
-import styles from './styles'; 
-import { deleteProduto } from '../../db/database'; 
+import { View, Text, Alert, TouchableOpacity } from 'react-native';
+import styles from './styles';
+import { deleteProduto } from '../../db/database';
+import { Ionicons } from '@expo/vector-icons';
 
 const Item = ({ produto, onDelete, onEdit }) => {
 
@@ -18,8 +19,12 @@ const Item = ({ produto, onDelete, onEdit }) => {
     <View style={styles.itemContainer}>
       <Text style={styles.itemText}>{`${produto.nome} - R$${produto.preco.toFixed(2)}`}</Text>
       <View style={styles.buttonsContainer}>
-        <Button title="Editar" onPress={() => onEdit(produto)} />
-        <Button title="Deletar" onPress={handleDelete} />
+        <TouchableOpacity style={styles.iconButton} onPress={() => onEdit(produto)}>
+          <Ionicons name="pencil-outline" size={24} color="#c36571" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.iconButton} onPress={handleDelete}>
+          <Ionicons name="trash-outline" size={24} color="#2d5658" />
+        </TouchableOpacity>
       </View>
     </View>
   );

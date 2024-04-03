@@ -35,6 +35,10 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
   },
+  nomeProduto: {
+    maxWidth: 150,
+    overflow: 'hidden',
+  },
 });
 
 export default styles;

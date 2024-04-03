@@ -57,7 +57,7 @@ const App = () => {
         <Stack.Screen
           name="TodasVendas"
           component={TodasVendas}
-          options={{ headerTitle: ''}}
+          options={{ headerTitle: 'MIKU 🩷  TODAS VENDAS'}}
         />
         <Stack.Screen
           name="DetalhesVenda"
